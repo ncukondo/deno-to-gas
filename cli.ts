@@ -13,7 +13,7 @@ const { args: [entry], options } = await new Command()
       default: true as boolean,
     },
   )
-  .option("-n, --globalname <name:string>", "Global name for iife.")
+  .option("-n, --globalName <name:string>", "Global name for iife.")
   .arguments("<entryfile:string>")
   .parse(Deno.args);
 

@@ -5,8 +5,6 @@ import { parse as parseArgs } from "https://deno.land/std@0.66.0/flags/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.179.0/fs/ensure_dir.ts";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
 
-const packageFile = "version.json";
-
 type ImportMap = { imports: Record<string, string> };
 type ConvertOption = {
   importmap: ImportMap;
@@ -77,18 +75,6 @@ const loadImportmap = async () => {
 };
 
 const getGlobalName = (sourcePath: string) => {
-  const fileExists = (path: string | URL) => {
-    try {
-      const stat = Deno.statSync(path);
-      return stat.isFile;
-    } catch {
-      return false;
-    }
-  };
-  if (fileExists(packageFile)) {
-    const pkg = JSON.parse(Deno.readTextFileSync(packageFile));
-    return pkg.name.split("/").at(-1).replaceAll("-", "_");
-  }
   const basename = path.basename(sourcePath);
   const [globalName] = basename.split(".").map((t) => t.replaceAll("-", "_"));
   return globalName;
