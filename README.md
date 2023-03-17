@@ -8,7 +8,7 @@ To use this CLI, you'll need the Deno runtime. If you don't have Deno installed,
 
 Once Deno is installed, you can install this CLI using the following command:
 
-```bash
+```sh
 deno install -n deno-to-gas https://raw.githubusercontent.com/ncukondo/deno-to-gas/main/cli.ts
 ```
 
@@ -16,7 +16,7 @@ deno install -n deno-to-gas https://raw.githubusercontent.com/ncukondo/deno-to-g
 
 You can use the following command to bundle and convert TypeScript modules to JavaScript files that can be used in Google Apps Script:
 
-```bash
+```sh
 deno-to-gas <entry file> --outfile=[output file]
 ```
 
@@ -25,7 +25,7 @@ deno-to-gas <entry file> --outfile=[output file]
   
 ### Options:
 
-```bash
+```sh
 -h, --help           - Show this help.
 -V, --version        - Show the version number for this program.
 -o, --outfile        - path to output.
@@ -34,8 +34,8 @@ deno-to-gas <entry file> --outfile=[output file]
 -n, --globalName     - Global name for iife.
 ```
 
-```bash
-deno-to-gas --entry ./src/main.ts --outfile=./dist/script.js --globalName=AwesomeApp
+```sh
+deno-to-gas ./src/main.ts --outfile=./dist/script.js --globalName=AwesomeApp
 ```
 
 This will generate a JavaScript file from the ./src/main.ts file and save it to ./dist/script.js. It will also hava globalName of iife as "AwesomeApp".
