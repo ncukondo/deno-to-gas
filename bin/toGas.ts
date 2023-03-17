@@ -103,16 +103,15 @@ const convert = async (
   options?: Partial<ConvertOption>,
 ) => {
   const defaultOption = makeDefaultOption(sourcePath);
-  const { exposeExports, outfile, ...opt } = {
+  const { outfile, ...opt } = {
     ...await defaultOption,
     ...options,
   };
   const code = await buildiif(sourcePath, opt);
-  const tail = exposeExports
+  const tail = opt.exposeExports
     ? "\n\n" + exposeEntryExports(code, opt.globalName)
     : "";
-  await Deno.writeTextFile(outfile, code + tail);
-  return code + tail;
+  return { code: code + tail, options: opt };
 };
 
 const build = async (
@@ -120,18 +119,12 @@ const build = async (
   options?: Partial<BuildOption>,
 ) => {
   const defaultOption = makeDefaultOption(sourcePath);
-  const { exposeExports, outfile, ...opt } = {
-    ...await defaultOption,
-    ...options,
-  };
-  const code = await buildiif(sourcePath, opt);
-  const tail = exposeExports
-    ? "\n\n" + exposeEntryExports(code, opt.globalName)
-    : "";
+  const { code, options: opt } = await convert(sourcePath, options);
+  const { outfile } = { ...await defaultOption, ...opt, ...options };
   const dir = path.dirname(outfile);
   await ensureDir(dir);
-  await Deno.writeTextFile(outfile, code + tail);
-  return code + tail;
+  await Deno.writeTextFile(outfile, code);
+  return { code, info: { outfile, entry: sourcePath, ...opt } };
 };
 
 if (import.meta.main) {

@@ -17,5 +17,10 @@ const { args: [entry], options } = await new Command()
   .arguments("<entryfile:string>")
   .parse(Deno.args);
 
-await build(entry, options);
+const { info } = await build(entry, options);
+console.log(`
+
+  Converted🎉: "${info.entry}" -> "${info.outfile}"
+
+  `);
 Deno.exit();
