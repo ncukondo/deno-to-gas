@@ -3,7 +3,7 @@ import { build } from "./bin/toGas.ts";
 
 const { args: [entry], options } = await new Command()
   .name("deno-to-gas")
-  .version("0.1.0")
+  .version("0.0.3")
   .description("Convert deno modules to google apps scripts file")
   .option("-o, --outfile <path:string>", "path to output.")
   .option(

@@ -1,7 +1,6 @@
 import { build as esbuild } from "https://deno.land/x/esbuild@v0.17.11/mod.js";
 import { cache } from "npm:esbuild-plugin-cache";
-import * as path from "https://deno.land/std@0.167.0/path/mod.ts";
-import { parse as parseArgs } from "https://deno.land/std@0.66.0/flags/mod.ts";
+import * as path from "https://deno.land/std@0.179.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.179.0/fs/ensure_dir.ts";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
 
@@ -103,7 +102,7 @@ const convert = async (
   options?: Partial<ConvertOption>,
 ) => {
   const defaultOption = makeDefaultOption(sourcePath);
-  const { outfile, ...opt } = {
+  const { ...opt } = {
     ...await defaultOption,
     ...options,
   };
@@ -124,17 +123,8 @@ const build = async (
   const dir = path.dirname(outfile);
   await ensureDir(dir);
   await Deno.writeTextFile(outfile, code);
-  return { code, info: { outfile, entry: sourcePath, ...opt } };
+  return { code, info: { entry: sourcePath, ...opt, outfile } };
 };
-
-if (import.meta.main) {
-  const opts = parseArgs(Deno.args) as Partial<BuildOption> & { "_": string[] };
-  const entryPoint = opts["_"][0];
-
-  await build(entryPoint, opts);
-
-  Deno.exit();
-}
 
 export { build, convert };
 export type { BuildOption, ConvertOption };

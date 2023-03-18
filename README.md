@@ -9,7 +9,7 @@ To use this CLI, you'll need the Deno runtime. If you don't have Deno installed,
 Once Deno is installed, you can install this CLI using the following command:
 
 ```sh
-deno install -n deno-to-gas https://raw.githubusercontent.com/ncukondo/deno-to-gas/main/cli.ts
+deno install -qAn deno-to-gas  https://deno.land/x/deno_to_gas@v0.0.3/cli.ts
 ```
 
 ## Usage
