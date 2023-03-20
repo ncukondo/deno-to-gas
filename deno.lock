@@ -1045,6 +1045,7 @@
       "@rollup/plugin-commonjs": "@rollup/plugin-commonjs@24.0.1_rollup@3.19.1",
       "@rollup/plugin-node-resolve": "@rollup/plugin-node-resolve@15.0.1_rollup@3.19.1",
       "@rollup/plugin-url": "@rollup/plugin-url@8.0.1_rollup@3.19.1",
+      "@rollup/plugin-virtual": "@rollup/plugin-virtual@3.0.1_rollup@3.19.1",
       "@types/google-apps-script": "@types/google-apps-script@1.0.56",
       "@types/google-apps-script@1.0.56": "@types/google-apps-script@1.0.56",
       "citation-js": "citation-js@0.6.4_@citation-js+core@0.6.1",
@@ -1435,6 +1436,12 @@
           "@rollup/pluginutils": "@rollup/pluginutils@5.0.2_rollup@3.19.1",
           "make-dir": "make-dir@3.1.0",
           "mime": "mime@3.0.0",
+          "rollup": "rollup@3.19.1"
+        }
+      },
+      "@rollup/plugin-virtual@3.0.1_rollup@3.19.1": {
+        "integrity": "sha512-fK8O0IL5+q+GrsMLuACVNk2x21g3yaw+sG2qn16SnUd3IlBsQyvWxLMGHmCmXRMecPjGRSZ/1LmZB4rjQm68og==",
+        "dependencies": {
           "rollup": "rollup@3.19.1"
         }
       },

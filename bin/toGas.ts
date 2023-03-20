@@ -3,6 +3,7 @@ import { cache } from "npm:esbuild-plugin-cache";
 import * as path from "https://deno.land/std@0.179.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.179.0/fs/ensure_dir.ts";
 import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
+import { toIife } from "./rollup.ts";
 
 type ImportMap = { imports: Record<string, string> };
 type ConvertOption = {
@@ -30,13 +31,13 @@ const buildiif = async (
   const result = await esbuild({
     entryPoints: [sourcePath],
     bundle: true,
-    format: "iife",
-    globalName,
+    format: "esm",
     write: false,
     ...plugins,
   });
   const text = new TextDecoder().decode(result.outputFiles[0].contents);
-  return text;
+  const iife = toIife(text, { globalName });
+  return iife;
 };
 
 const exposeEntryExports = (code: string, globalName: string) => {
