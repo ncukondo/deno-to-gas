@@ -1,9 +1,6 @@
-import { build as esbuild } from "https://deno.land/x/esbuild@v0.17.11/mod.js";
-import { cache } from "npm:esbuild-plugin-cache";
 import * as path from "https://deno.land/std@0.179.0/path/mod.ts";
 import { ensureDir } from "https://deno.land/std@0.179.0/fs/ensure_dir.ts";
-import { denoPlugin } from "https://deno.land/x/esbuild_deno_loader@0.6.0/mod.ts";
-import { toIife } from "./rollup.ts";
+import { bundle, BundleOptions } from "https://deno.land/x/emit@0.28.0/mod.ts";
 
 type ImportMap = { imports: Record<string, string> };
 type ConvertOption = {
@@ -18,29 +15,19 @@ type BuildOption = ConvertOption & {
 
 const buildiif = async (
   sourcePath: string,
-  { importmap, cachePath, globalName }: ConvertOption,
+  { importmap, globalName }: { importmap?: ImportMap; globalName: string },
 ) => {
-  const plugins = importmap && cachePath
-    ? {
-      plugins: [
-        cache({ importmap, directory: cachePath }),
-        denoPlugin(),
-      ],
-    }
-    : { plugins: [denoPlugin()] };
-  const result = await esbuild({
-    entryPoints: [sourcePath],
-    bundle: true,
-    format: "esm",
-    write: false,
-    ...plugins,
-  });
-  const text = new TextDecoder().decode(result.outputFiles[0].contents);
-  const iife = toIife(text, { globalName });
-  return iife;
+  const additional = importmap ? { importMap: importmap } : {};
+  const opt: BundleOptions = {
+    type: "classic",
+    ...additional,
+  };
+  const code = `const ${globalName} = ${(await bundle(sourcePath, opt)).code}`;
+  return code;
 };
 
 const exposeEntryExports = (code: string, globalName: string) => {
+  console.log(code);
   const exports = new Function(`${code} return ${globalName}`)();
   const isFunction = (x: unknown): x is (...args: unknown[]) => unknown =>
     typeof x === "function";
@@ -109,7 +96,7 @@ const convert = async (
   };
   const code = await buildiif(sourcePath, opt);
   const tail = opt.exposeExports
-    ? "\n\n" + exposeEntryExports(code, opt.globalName)
+    ? "\n" + exposeEntryExports(code, opt.globalName)
     : "";
   return { code: code + tail, options: opt };
 };
