@@ -8,12 +8,13 @@ const { args: [entry], options } = await new Command()
   .option("-o, --outfile <path:string>", "path to output.")
   .option(
     "-e, --exposeExports <expose:boolean>",
-    "wether expose exports in entry file",
+    "whether expose exports in entry file",
     {
       default: true as boolean,
     },
   )
   .option("-n, --globalName <name:string>", "Global name for iife.")
+  .option("-i, --import-map", "Path for import map.")
   .arguments("<entryfile:string>")
   .parse(Deno.args);
 
